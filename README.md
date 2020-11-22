@@ -8,6 +8,13 @@ Requirements
 
 Webserver and Mailserver installed.
 
+install the role via ansible-galaxy::
+---------
+
+```bash
+ansible-galaxy install mikysal78.roundcube
+```
+
 Role Variables
 --------------
 
