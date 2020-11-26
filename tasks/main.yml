@@ -1,23 +1,23 @@
 ---
 # tasks file for ansible-roundcube
-- name: PHP | Install Composer
+- name: RoundCube | install composer
   shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
   args:
     warn: no
   when: roundcube_install_composer | bool
 
-- name: extract roundcube package
+- name: RoundCube | extract roundcube package
   unarchive:
     src: "https://github.com/roundcube/roundcubemail/releases/download/{{ roundcube_version }}/roundcubemail-{{ roundcube_version }}-complete.tar.gz"
     dest: /tmp
     remote_src: yes
 
-- name: clean directory installer
+- name: RoundCube | clean directory installer
   file:
     state: absent
     path: "/tmp/roundcubemail-{{ roundcube_version }}/installer"
 
-- name: create directory htdocs
+- name: RoundCube | create directory htdocs
   file:
     path: "{{ roundcube_htdocs }}"
     state: directory
@@ -25,10 +25,10 @@
     group: www-data
     mode: 0755
 
-- name: copy source to htdocs
+- name: RoundCube | copy source to htdocs
   shell: 'cp -r /tmp/roundcubemail-{{ roundcube_version }}/. {{ roundcube_htdocs }}'
 
-- name: Change permissions
+- name: RoundCube | Change permissions
   file:
     path: "{{ roundcube_htdocs }}/{{ item }}"
     state: directory
@@ -39,15 +39,21 @@
     - logs
     - temp
 
-- name: set config.inc.php file
+- name: RoundCube | set config.inc.php file
   template:
     src: config.inc.php.j2
     dest: "{{ roundcube_htdocs }}/config/config.inc.php"
 
-- name: import database schema.sql
+- name: RoundCube | copy database schema.sql file
+  copy:
+    src: schema_rb.sql
+    dest: /tmp
+
+ 
+- name: RoundCube | import database schema.sql
   mysql_db:
     name: "{{ roundcube_db_name }}"
     login_user: "{{ roundcube_db_user }}"
     login_password: "{{ roundcube_db_password }}"
     state: import
-    target: "/tmp/roundcubemail-{{ roundcube_version }}/SQL/mysql.initial.sql"
+    target: "/tmp/schema_rb.sql"
