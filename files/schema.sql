@@ -5,7 +5,7 @@
 
 -- Table structure for table `session`
 
-CREATE TABLE `session` (
+CREATE TABLE IF NOT EXISTS `session` (
  `sess_id` varchar(128) NOT NULL,
  `changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
  `ip` varchar(40) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `session` (
 
 -- Table structure for table `users`
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
  `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
  `username` varchar(128) BINARY NOT NULL,
  `mail_host` varchar(128) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `users` (
 
 -- Table structure for table `cache`
 
-CREATE TABLE `cache` (
+CREATE TABLE IF NOT EXISTS `cache` (
  `user_id` int(10) UNSIGNED NOT NULL,
  `cache_key` varchar(128) BINARY NOT NULL,
  `expires` datetime DEFAULT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `cache` (
 
 -- Table structure for table `cache_shared`
 
-CREATE TABLE `cache_shared` (
+CREATE TABLE IF NOT EXISTS `cache_shared` (
  `cache_key` varchar(255) BINARY NOT NULL,
  `expires` datetime DEFAULT NULL,
  `data` longtext NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `cache_shared` (
 
 -- Table structure for table `cache_index`
 
-CREATE TABLE `cache_index` (
+CREATE TABLE IF NOT EXISTS `cache_index` (
  `user_id` int(10) UNSIGNED NOT NULL,
  `mailbox` varchar(255) BINARY NOT NULL,
  `expires` datetime DEFAULT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `cache_index` (
 
 -- Table structure for table `cache_thread`
 
-CREATE TABLE `cache_thread` (
+CREATE TABLE IF NOT EXISTS `cache_thread` (
  `user_id` int(10) UNSIGNED NOT NULL,
  `mailbox` varchar(255) BINARY NOT NULL,
  `expires` datetime DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `cache_thread` (
 
 -- Table structure for table `cache_messages`
 
-CREATE TABLE `cache_messages` (
+CREATE TABLE IF NOT EXISTS `cache_messages` (
  `user_id` int(10) UNSIGNED NOT NULL,
  `mailbox` varchar(255) BINARY NOT NULL,
  `uid` int(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -104,7 +104,7 @@ CREATE TABLE `cache_messages` (
 
 -- Table structure for table `contacts`
 
-CREATE TABLE `contacts` (
+CREATE TABLE IF NOT EXISTS `contacts` (
  `contact_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
  `changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
  `del` tinyint(1) NOT NULL DEFAULT '0',
@@ -123,7 +123,7 @@ CREATE TABLE `contacts` (
 
 -- Table structure for table `contactgroups`
 
-CREATE TABLE `contactgroups` (
+CREATE TABLE IF NOT EXISTS `contactgroups` (
   `contactgroup_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NOT NULL,
   `changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
@@ -135,7 +135,7 @@ CREATE TABLE `contactgroups` (
   INDEX `contactgroups_user_index` (`user_id`,`del`)
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
 
-CREATE TABLE `contactgroupmembers` (
+CREATE TABLE IF NOT EXISTS `contactgroupmembers` (
   `contactgroup_id` int(10) UNSIGNED NOT NULL,
   `contact_id` int(10) UNSIGNED NOT NULL,
   `created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
@@ -150,7 +150,7 @@ CREATE TABLE `contactgroupmembers` (
 
 -- Table structure for table `identities`
 
-CREATE TABLE `identities` (
+CREATE TABLE IF NOT EXISTS `identities` (
  `identity_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
  `user_id` int(10) UNSIGNED NOT NULL,
  `changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
@@ -173,7 +173,7 @@ CREATE TABLE `identities` (
 
 -- Table structure for table `dictionary`
 
-CREATE TABLE `dictionary` (
+CREATE TABLE IF NOT EXISTS `dictionary` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- redundant, for compat. with Galera Cluster
   `user_id` int(10) UNSIGNED DEFAULT NULL, -- NULL here is for "shared dictionaries"
   `language` varchar(5) NOT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE `dictionary` (
 
 -- Table structure for table `searches`
 
-CREATE TABLE `searches` (
+CREATE TABLE IF NOT EXISTS `searches` (
  `search_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
  `user_id` int(10) UNSIGNED NOT NULL,
  `type` int(3) NOT NULL DEFAULT '0',
@@ -200,7 +200,7 @@ CREATE TABLE `searches` (
 
 -- Table structure for table `filestore`
 
-CREATE TABLE `filestore` (
+CREATE TABLE IF NOT EXISTS `filestore` (
  `file_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
  `user_id` int(10) UNSIGNED NOT NULL,
  `context` varchar(32) NOT NULL,
@@ -215,7 +215,7 @@ CREATE TABLE `filestore` (
 
 -- Table structure for table `system`
 
-CREATE TABLE `system` (
+CREATE TABLE IF NOT EXISTS `system` (
  `name` varchar(64) NOT NULL,
  `value` mediumtext,
  PRIMARY KEY(`name`)
